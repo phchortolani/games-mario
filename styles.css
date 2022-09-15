@@ -13,6 +13,24 @@
     pointer-events: none;
 }
 
+.bird {
+    width: 80px;
+    margin-top: 30px;
+    animation: bird-animation 15s infinite alternate-reverse linear;
+    position: absolute;
+    
+}
+
+@keyframes bird-animation {
+    from {
+        right: 0;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
 .dScore {
     font-size: 20pt;
     position: absolute;
@@ -20,6 +38,7 @@
     color: white;
 
 }
+
 .mario {
     width: 120px;
     position: absolute;
