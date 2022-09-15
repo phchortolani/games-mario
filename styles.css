@@ -14,11 +14,11 @@
 }
 
 .bird {
-    width: 80px;
+    width: 50px !important;
     margin-top: 30px;
     animation: bird-animation 15s infinite alternate-reverse linear;
-    position: absolute;
-    
+    position: absolute; 
+
 }
 
 @keyframes bird-animation {
