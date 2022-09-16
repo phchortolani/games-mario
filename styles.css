@@ -5,6 +5,10 @@
     font-family: monospace;
 
 }
+:root {
+    --bird-x: 0%;
+    --bird-y: 0%;
+}
 
 .clouds {
     width: 300px;
@@ -16,8 +20,11 @@
 .bird {
     width: 50px !important;
     margin-top: 30px;
-    animation: bird-animation 15s infinite alternate-reverse linear;
-    position: absolute; 
+    /*  animation: bird-animation 15s infinite alternate-reverse linear; */
+    position: absolute;
+    top: var(--bird-y);
+    left: var(--bird-x);
+    transition: 350ms ease;
 
 }
 
@@ -61,7 +68,7 @@
     position: relative;
     overflow: hidden;
     background: linear-gradient(#87CEEB, #E0F6FF);
-    border-bottom: 4px solid #008c00;
+    border-bottom: 8px solid #266926;
     cursor: pointer;
 }
 
@@ -101,7 +108,7 @@
 
 @keyframes clouds-animation {
     from {
-        right: -80px;
+        right: -300px;
     }
 
     to {
