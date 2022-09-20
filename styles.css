@@ -5,6 +5,7 @@
     font-family: monospace;
 
 }
+
 :root {
     --bird-x: 0%;
     --bird-y: 0%;
@@ -17,6 +18,11 @@
     pointer-events: none;
 }
 
+.cloudsEnd {
+    opacity: 0;
+    transition: 2s;
+}
+
 .bird {
     width: 50px !important;
     margin-top: 30px;
@@ -26,6 +32,11 @@
     left: var(--bird-x);
     transition: 350ms ease;
 
+}
+
+.birdDead {
+    opacity: 0;
+    transition: 2s;
 }
 
 @keyframes bird-animation {
@@ -54,7 +65,7 @@
 }
 
 .jump {
-    animation: jump 700ms ease-out;
+    animation: jump 700ms ease;
 }
 
 .dScore {
@@ -62,7 +73,7 @@
 }
 
 .view {
-    width: 80%;
+   
     height: 500px;
     margin: 0 auto;
     position: relative;
