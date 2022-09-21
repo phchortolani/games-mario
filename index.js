@@ -5,6 +5,8 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
+const port = process.env.PORT || 3000;
+
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
@@ -15,6 +17,6 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 });
 
-server.listen(3000, () => {
+server.listen(port, () => {
   console.log('http://localhost:3000/');
 });
