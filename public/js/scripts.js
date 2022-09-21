@@ -35,6 +35,22 @@ var birdCoordinate = {
 }
 
 
+socket.on("movedBird", (e) => {
+    move(e.x, e.y)
+    console.log(birdCoordinate)
+})
+
+function move(x, y) {
+    birdCoordinate.x = x;
+    birdCoordinate.y = y;
+    document.documentElement.style.setProperty('--bird-y', `${y}%`)
+    document.documentElement.style.setProperty('--bird-x', `${x}%`)
+
+}
+function moveBird(x, y) {
+    socket.emit('moveBird', birdCoordinate)
+    move(x, y)
+}
 
 document.addEventListener('keydown', (e) => keyPress(e));
 document.addEventListener('click', (e) => jump({ code: new Mario().actions.jump }));
@@ -51,8 +67,9 @@ async function keyPress(e) {
 
     limitRangeBird();
 
-    document.documentElement.style.setProperty('--bird-y', `${birdCoordinate.y}%`)
-    document.documentElement.style.setProperty('--bird-x', `${birdCoordinate.x}%`)
+    const { y, x } = birdCoordinate;
+
+    moveBird(x, y)
 
 }
 
