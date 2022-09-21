@@ -4,9 +4,10 @@
   "description": "",
   "main": "scripts.js",
   "scripts": {
-    "dev": "node index.js"
+    "dev": "node index.js",
+    "start": "index.js"
   },
-  "start": "index.js",
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/phchortolani/games-mario.git"
