@@ -5,6 +5,7 @@ const pipe = document.querySelector('.pipe');
 const clouds = document.querySelector(".clouds");
 const score = document.querySelectorAll('.score');
 const gameOverMsg = document.querySelector('.gameOverMsg');
+var socket = io();
 
 var scoreValue = 1;
 var controlPointer = true;
@@ -31,6 +32,8 @@ var birdCoordinate = {
     y: 0,
     x: 0
 }
+
+
 
 document.addEventListener('keydown', (e) => keyPress(e));
 document.addEventListener('click', (e) => jump({ code: new Mario().actions.jump }));
