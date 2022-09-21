@@ -7,6 +7,7 @@ const score = document.querySelectorAll('.score');
 const gameOverMsg = document.querySelector('.gameOverMsg');
 var socket = io();
 
+
 var scoreValue = 1;
 var controlPointer = true;
 
