@@ -7,13 +7,12 @@ const score = document.querySelectorAll('.score');
 const gameOverMsg = document.querySelector('.gameOverMsg');
 var socket = io();
 
-
 var scoreValue = 1;
 var controlPointer = true;
 
 class FlappyBird {
     isEndGame = false;
-    actions = {
+    actionsKeys = {
         up: "w",
         right: "d",
         down: "s",
@@ -23,21 +22,33 @@ class FlappyBird {
 }
 
 class Mario {
-    actions = {
+
+    actionsKeys = {
         jump: "Space"
+    }
+
+    jump() {
+
+        if (!mario.classList.value.includes("jump")) mario.classList.add("jump");
+        setTimeout(() => {
+            mario.classList.remove("jump");
+            controlPointer = true;
+        }, 700)
     }
 }
 
-
-var birdCoordinate = {
+let birdCoordinate = {
     y: 0,
     x: 0
 }
 
-
 socket.on("movedBird", (e) => {
     move(e.x, e.y)
-    console.log(birdCoordinate)
+})
+
+socket.on("jumpedMario", () => {
+    const m = new Mario();
+    return m.jump()
 })
 
 function move(x, y) {
@@ -53,13 +64,14 @@ function moveBird(x, y) {
 }
 
 document.addEventListener('keydown', (e) => keyPress(e));
-document.addEventListener('click', (e) => jump({ code: new Mario().actions.jump }));
+//document.addEventListener('click', (e) => socket.emit('jumpMario'));
 
 async function keyPress(e) {
     const distanceBirdToMove = 10;
-    const marioActions = new Mario().actions;
-    const BirdActions = new FlappyBird().actions;
-    if (e.code == marioActions.jump && !mario.classList.contains("jump")) return jump(e)
+    const { actionsKeys: marioActions, jump: marioJump } = new Mario();
+    const BirdActions = new FlappyBird().actionsKeys;
+    if (e.code == marioActions.jump) return socket.emit('jumpMario');
+
     if (e.key == BirdActions.up) birdCoordinate.y -= distanceBirdToMove;
     if (e.key == BirdActions.right) birdCoordinate.x += distanceBirdToMove;
     if (e.key == BirdActions.down) birdCoordinate.y += distanceBirdToMove;
@@ -79,15 +91,6 @@ function limitRangeBird() {
     if (birdCoordinate.y > 85) birdCoordinate.y = 80;
     if (birdCoordinate.y < 0) birdCoordinate.y = 0;
     if (birdCoordinate.x < 0) birdCoordinate.x = 0;
-}
-
-
-const jump = (e) => {
-    if (!mario.classList.value.includes("jump")) mario.classList.add("jump");
-    setTimeout(() => {
-        mario.classList.remove("jump");
-        controlPointer = true;
-    }, 700)
 }
 
 
@@ -144,12 +147,13 @@ class CoreFunctions {
         stopBird();
         showEndMsg();
 
+
         clearInterval(isRunning);
     }
 
     runAutomaticMario(pipePosition) {
         if (pipePosition < 300) {
-            jump({ code: new Mario().actions.jump })
+            new Mario().jump();
         };
     }
 
@@ -169,19 +173,29 @@ const isRunning = setInterval(() => {
     const marioPosition = +window.getComputedStyle(mario).bottom.replace("px", "");
     const core = new CoreFunctions(pipePosition, marioPosition)
 
-    core.game.automaticMario();
+    //  core.game.automaticMario();
 
     if (pipePosition <= 100 && pipePosition > 0 && marioPosition < 75) {
-        core.game.endGame();
+        socket.emit("end", core)
     }
     if (pipe.offsetLeft < 0) {
         core.game.toScore();
     }
 }, 10)
 
+socket.on("endGame", (core) => {
+    const { pipePosition, marioPosition } = core;
+    const c = new CoreFunctions(pipePosition, marioPosition)
+    c.game.endGame();
+})
 
+
+socket.on("started", () => {
+    document.location.reload()
+})
 function reset() {
-    document.location.reload();
+
+    socket.emit("start")
 }
 
 

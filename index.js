@@ -14,14 +14,26 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    console.log('a user connected: ' + socket.id);
+    //console.log('a user connected: ' + socket.id);
 
     socket.on("moveBird", (birdCoordinate) => {
         io.emit("movedBird", birdCoordinate)
+    })
+
+    socket.on("jumpMario", () => {
+        io.emit("jumpedMario")
+    })
+
+    socket.on("end", (func) => {
+        io.emit("endGame", func)
+    })
+
+    socket.on("start", () => {
+        io.emit("started")
     })
 });
 
 
 server.listen(port, () => {
-    console.log('http://localhost:3000/');
+    if (port == 3000) console.log('http://localhost:3000/');
 });
